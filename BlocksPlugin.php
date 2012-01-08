@@ -4,7 +4,8 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
 {
     protected $_hooks = array(
     	'install',
-        'uninstall'
+        'uninstall',
+        'public_theme_header'
         
     );
     
@@ -17,6 +18,11 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
         $tabs['Blocks'] = uri('blocks/block-config');
         return $tabs;
         
+    }
+    
+    public function hookPublicThemeHeader()
+    {
+        queue_css('blocks');
     }
     
     public function hookInstall()

@@ -41,12 +41,11 @@ class BlocksManager
                     $this->html .= $html;
                 }
             } catch (Exception $e) {
-                
+                _log($e->getMessage());
             }
         }
     }
-    
-    
+        
     public function getHtml()
     {
         return $this->html;
