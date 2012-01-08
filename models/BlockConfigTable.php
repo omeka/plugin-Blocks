@@ -34,7 +34,6 @@ class BlockConfigTable extends Omeka_Db_Table
                 continue;
             }
         }
-
         return $blockConfigs;
     }
     
@@ -47,7 +46,6 @@ class BlockConfigTable extends Omeka_Db_Table
         } else {
             foreach($params as $column=>$value) {
                 $select->where("{$this->_alias}.$column = ?", $value);
-                _log($select);
                 return $select;
             }
             
@@ -56,7 +54,6 @@ class BlockConfigTable extends Omeka_Db_Table
     
     private function filterByCustomRoute($select, $params)
     {
-        
         $select->where("{$this->_alias}.custom_route = ?", $params['custom_route']);
         return $select;
     }
@@ -66,7 +63,9 @@ class BlockConfigTable extends Omeka_Db_Table
         $select->where("{$this->_alias}.controller IS NULL");
         $select->orWhere("{$this->_alias}.controller = ?", $params['controller']);
         $select->orWhere("{$this->_alias}.action = ?", $params['action']);
-        $select->orWhere("{$this->_alias}.id_request = ?", $params['id']);
+        if(isset($params['id'])) {
+            $select->orWhere("{$this->_alias}.id_request = ?", $params['id']);
+        }
         return $select;
     }
     
