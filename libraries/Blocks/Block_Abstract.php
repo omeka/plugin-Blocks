@@ -54,7 +54,7 @@ abstract class Blocks_Block_Abstract
      * @param $formData
      */
 
-    static function prepareConfigOptions($formData) {}
+    abstract static function prepareConfigOptions($formData) {}
 
     /**
      *
@@ -62,6 +62,6 @@ abstract class Blocks_Block_Abstract
      * the element's name must be set to 'options'
      * @return Zend_Form_Element | string element to add. It will be given the name 'options'
      */
-    static function formElementConfigData() {}
+    abstract static function formElementConfigData() {}
 
 }
