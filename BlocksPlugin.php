@@ -6,25 +6,25 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
     	'install',
         'uninstall',
         'public_theme_header'
-        
+
     );
-    
+
     protected $_filters = array(
         'admin_navigation_main'
     );
-    
+
     public function filterAdminNavigationMain($tabs)
     {
         $tabs['Blocks'] = uri('blocks/block-config');
         return $tabs;
-        
+
     }
-    
+
     public function hookPublicThemeHeader()
     {
         queue_css('blocks');
     }
-    
+
     public function hookInstall()
     {
         $db = get_db();
@@ -44,20 +44,21 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
           PRIMARY KEY (`id`),
           FULLTEXT KEY `omeka_module` (`omeka_module`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
-        
+
         ";
 
         $db->exec($sql);
-        
+
         //set up our packaged blocks -- a list of class names that extend Blocks_Block_Abstract
         $blocks = array(
             'BlocksTextBlock',
-            'BlocksCollectorsBlock'
+            'BlocksCollectorsBlock',
+            'BlocksCollectionItemBlock'
         );
         set_option('blocks', serialize($blocks));
-        
+
     }
-    
+
     public function hookUninstall()
     {
         $db = get_db();
@@ -65,5 +66,5 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
         $db->exec($sql);
         delete_option('blocks');
     }
-    
+
 }

@@ -15,7 +15,7 @@ class BlocksTextBlock extends Blocks_Block_Abstract
     const description = "A general-purpose text block.";
     const defaultTitle = "Text";
     const plugin = "Blocks";
-    
+
     public function render()
     {
         $html = "<div class='block'>";
@@ -26,13 +26,13 @@ class BlocksTextBlock extends Blocks_Block_Abstract
         $html .= "</div>";
         return $html;
     }
-    
+
     static function prepareConfigOptions($formData)
     {
         //just give back the contents of the textarea
         return $formData;
     }
-    
+
     static function formElementConfigData()
     {
         $options = array(
@@ -50,7 +50,7 @@ class BlocksCollectorsBlock extends Blocks_Block_Abstract
     const description = "Display the collectors for a collection.";
     const defaultTitle = "Collectors";
     const plugin = "Blocks";
-    
+
     public function render()
     {
         $collection = get_current_collection();
@@ -70,12 +70,41 @@ class BlocksCollectorsBlock extends Blocks_Block_Abstract
         $html .= "</div>";
         return $html;
     }
-    
+
     static function prepareConfigOptions($formData)
     {
         return null;
     }
-    
+
+    static function formElementConfigData()
+    {
+        return false;
+    }
+}
+
+class BlocksCollectionItemBlock extends Blocks_Block_Abstract
+{
+    const name = "Collection Random Item Block";
+    const description = "Display a random item for a collection.";
+    const defaultTitle = "Collection Random Item Block";
+    const plugin = "Blocks";
+
+	public function render()
+	{
+	    $collection = get_current_collection();
+	    $params = array('collection'=>$collection, 'random'=>1, 'hasImage'=>true);
+	    $items = get_items($params, 1);
+	    $item = $items[0];
+	    return display_files_for_item($options = array(), $wrapperAttributes = array('class'=>'block-collection-item'), $item);
+
+	}
+
+
+    static function prepareConfigOptions($formData)
+    {
+        return null;
+    }
+
     static function formElementConfigData()
     {
         return false;

@@ -2,3 +2,6 @@ div.blocks {width: 15%; border: 1px solid black; margin-left: 5px; }
 
 dl.blocks-block-configs {margin-left: 20px; }
 dl.blocks-block-configs dt {display:inline;}
+
+
+div.block-collection-item img {width: 120px; }
