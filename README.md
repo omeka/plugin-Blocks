@@ -22,7 +22,8 @@ Blocks must override the render() method, which returns the HTML to display in y
 
 Your plugin must register the blocks with the Blocks plugin on installation. The mechanism is simple. Get and 
 unserialize the 'blocks' option, add the name of your class(es) that extend Blocks_Block_Abstract, and serialize it
-back into the option.
+back into the option. This would make most sense in the hookInstall() method of your plugin. It would be polite
+to similarly remove them in hookUninstall().
 
 ```php
 $blocks = unserialize(get_option('blocks'));
