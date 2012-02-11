@@ -36,8 +36,8 @@ class BlocksTextBlock extends Blocks_Block_Abstract
     static function formElementConfigData()
     {
         $options = array(
-        	'label'=>'Enter the text for your block',
-        	'description' => "HTML is okay. NO PHP FOR YOU!"
+            'label'=>'Enter the text for your block',
+            'description' => "HTML is okay. NO PHP FOR YOU!"
         );
         $element = "textarea";
         return array('element'=>$element, 'options'=>$options);
@@ -89,15 +89,15 @@ class BlocksCollectionItemBlock extends Blocks_Block_Abstract
     const defaultTitle = "Collection Random Item Block";
     const plugin = "Blocks";
 
-	public function render()
-	{
-	    $collection = get_current_collection();
-	    $params = array('collection'=>$collection, 'random'=>1, 'hasImage'=>true);
-	    $items = get_items($params, 1);
-	    $item = $items[0];
-	    return display_files_for_item($options = array(), $wrapperAttributes = array('class'=>'block-collection-item'), $item);
+    public function render()
+    {
+        $collection = get_current_collection();
+        $params = array('collection'=>$collection, 'random'=>1, 'hasImage'=>true);
+        $items = get_items($params, 1);
+        $item = $items[0];
+        return display_files_for_item($options = array(), $wrapperAttributes = array('class'=>'block-collection-item'), $item);
 
-	}
+    }
 
 
     static function prepareConfigOptions($formData)

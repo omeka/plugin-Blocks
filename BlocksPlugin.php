@@ -3,10 +3,10 @@
 class BlocksPlugin extends Omeka_Plugin_Abstract
 {
     protected $_hooks = array(
-    	'install',
+        'install',
         'uninstall',
-        'public_theme_header'
-
+        'public_theme_header',
+        'public_theme_page_content'
     );
 
     protected $_filters = array(
@@ -23,6 +23,15 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
     public function hookPublicThemeHeader()
     {
         queue_css('blocks');
+    }
+
+    public function hookPublicThemePageContent()
+    {
+
+        $html = "<div class='blocks'>";
+        $html .= blocks();
+        $html .= "</div>";
+        echo $html;
     }
 
     public function hookInstall()
