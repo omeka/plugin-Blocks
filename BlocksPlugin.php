@@ -27,11 +27,7 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
 
     public function hookPublicThemePageContent()
     {
-
-        $html = "<div class='blocks'>";
-        $html .= blocks();
-        $html .= "</div>";
-        echo $html;
+        echo blocks();
     }
 
     public function hookInstall()
