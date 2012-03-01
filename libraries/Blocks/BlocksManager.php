@@ -12,12 +12,12 @@ class BlocksManager
     public $request;
     public $blocks = array();
     public $html= '';
-    
+
     public function setRequest($request)
     {
         $this->request = $request;
     }
-    
+
     public function addBlocks()
     {
         $requestInfo = $this->request->getParams();
@@ -31,24 +31,27 @@ class BlocksManager
             $this->blocks[] = new $class($this->request, $blockConfig);
         }
     }
-    
+
     public function renderBlocks()
     {
         foreach($this->blocks as $block) {
             try {
                 $html = $block->render();
                 if($html) {
+                    $blockClass = 'block_' . Inflector::underscore(get_class($block));
+                    $this->html .= "<div class='block $blockClass'>";
                     $this->html .= $html;
+                    $this->html .= "</div>";
                 }
             } catch (Exception $e) {
-                _log($e->getMessage());
+                _log($e);
             }
         }
     }
-        
+
     public function getHtml()
     {
         return $this->html;
     }
-    
+
 }
