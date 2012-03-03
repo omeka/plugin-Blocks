@@ -35,16 +35,13 @@ class BlocksManager
     public function renderBlocks()
     {
         foreach($this->blocks as $block) {
-            try {
-                $html = $block->render();
-                if($html) {
-                    $blockClass = 'block_' . Inflector::underscore(get_class($block));
-                    $this->html .= "<div class='block $blockClass'>";
-                    $this->html .= $html;
-                    $this->html .= "</div>";
-                }
-            } catch (Exception $e) {
-                _log($e);
+            if(!$block->isEmpty()) {
+                $html = "<h2>" . $block->getConfigTitle() . "</h2>";
+                $html .= $block->render();
+                $blockClass = 'block_' . Inflector::underscore(get_class($block));
+                $this->html .= "<div class='block $blockClass'>";
+                $this->html .= $html;
+                $this->html .= "</div>";
             }
         }
     }

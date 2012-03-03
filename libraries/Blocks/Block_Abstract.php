@@ -17,12 +17,24 @@ abstract class Blocks_Block_Abstract
         $this->blockConfig = $blockConfig;
     }
 
+
+    public function getBlockConfig()
+    {
+        return $this->blockConfig;
+    }
+
+    public function getConfigTitle()
+    {
+        return $this->blockConfig->title;
+    }
+
     /**
      *
      * Try to figure out what record is being displayed, if any
      * Each controller can stuff different variables into the view,
      * so have to approach this in a non-abstract way.
      */
+
 
     public function getRecord()
     {
@@ -45,6 +57,9 @@ abstract class Blocks_Block_Abstract
             return $view->Item;
         }
     }
+
+    abstract public function isEmpty();
+
 
     abstract public function render();
 
