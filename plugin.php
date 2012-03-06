@@ -16,6 +16,11 @@ class BlocksTextBlock extends Blocks_Block_Abstract
     const defaultTitle = "Text";
     const plugin = "Blocks";
 
+    public function isEmpty()
+    {
+        return false;
+    }
+
     public function render()
     {
         $html = "<div class='block'>";
@@ -50,6 +55,11 @@ class BlocksCollectorsBlock extends Blocks_Block_Abstract
     const description = "Display the collectors for a collection.";
     const defaultTitle = "Collectors";
     const plugin = "Blocks";
+
+    public function isEmpty()
+    {
+        return false;
+    }
 
     public function render()
     {
@@ -88,6 +98,11 @@ class BlocksCollectionItemBlock extends Blocks_Block_Abstract
     const description = "Display a random item for a collection.";
     const defaultTitle = "Collection Random Item Block";
     const plugin = "Blocks";
+
+    public function isEmpty()
+    {
+        return false;
+    }
 
     public function render()
     {

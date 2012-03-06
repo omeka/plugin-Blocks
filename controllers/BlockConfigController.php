@@ -11,15 +11,17 @@ class Blocks_BlockConfigController extends Omeka_Controller_Action
             'page',
             'pluginInstall',
             'fake_cron_fakecron'
-        
+
         );
-        
-    
+
+
     public function init()
     {
+
+        $this->_helper->db->setDefaultModelName('BlockConfig');
         $this->_modelClass = 'BlockConfig';
     }
-    
+
     public function indexAction()
     {
         $this->_forward('browse');
@@ -34,20 +36,20 @@ class Blocks_BlockConfigController extends Omeka_Controller_Action
         $routesInfo = $this->setupView();
         $form = $this->getBlockConfigForm($blockConfig, $routesInfo, $blockClass);
         $this->view->form = $form;
-        
-    
+
+
         if (!$this->getRequest()->isPost()) {
             return;
         }
-    
+
         if (!$form->isValid($this->getRequest()->getPost())) {
             return;
         }
-                
+
         $blockConfig->saveForm($form, $blockClass);
         $this->_forward('browse');
     }
-    
+
     public function addAction()
     {
         $blockClass = $this->getRequest()->getParam('block-class');
@@ -55,20 +57,20 @@ class Blocks_BlockConfigController extends Omeka_Controller_Action
         $routesInfo = $this->setupView();
         $form = $this->getBlockConfigForm(false, $routesInfo, $blockClass);
         $this->view->form = $form;
-        
-    
+
+
         if (!$this->getRequest()->isPost()) {
             return;
         }
-    
+
         if (!$form->isValid($this->getRequest()->getPost())) {
             return;
         }
-        
+
         $blockConfig = new BlockConfig();
         $blockConfig->saveForm($form, $blockClass);
         $this->_forward('browse');
-        
+
     }
 
 
@@ -80,22 +82,22 @@ class Blocks_BlockConfigController extends Omeka_Controller_Action
         foreach($blockClasses as $blockClass)
         {
             $blocks[$blockClass] = array(
-                	'name'=>$blockClass::name,
-                	'description'=>$blockClass::description,
+                    'name'=>$blockClass::name,
+                    'description'=>$blockClass::description,
                     'configs'=>$blockConfigTable->findBy(array('class_name'=>$blockClass)),
-                
+
                 );
         }
-        
+
         $this->view->assign('blocks', $blocks);
-        
+
     }
 
     /**
      *
      * Adds some route info to the add and edit view to be used in configuring
      */
-    
+
     private function setupView()
     {
         $router = Omeka_Context::getInstance()->getFrontController()->getRouter();
@@ -116,17 +118,17 @@ class Blocks_BlockConfigController extends Omeka_Controller_Action
 
         $routesInfo['collectionsShow'] = array('action'=>'show', 'controller'=>'collections');
         $routesInfo['collectionsBrowse'] = array('action'=>'browse', 'controller'=>'collections');
-        
+
         $this->view->assign('routes', $routesInfo);
         return $routesInfo;
     }
-    
+
     private function getBlockConfigForm($blockConfig = false, $routesInfo, $blockClass)
     {
-        
+
         require_once BLOCKS_PLUGIN_DIR . '/forms/BlockConfigForm.php';
         $form = new BlockConfigForm(array('blockConfig'=>$blockConfig , 'routes'=>$routesInfo, 'blockClass'=>$blockClass));
         return $form;
-        
+
     }
 }
