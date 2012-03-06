@@ -28,11 +28,7 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
 
     public function hookPublicThemePageContent()
     {
-
-        $html = "<div class='blocks'>";
-        $html .= blocks();
-        $html .= "</div>";
-        echo $html;
+        echo blocks();
     }
 
     public function hookInstall()
@@ -57,7 +53,7 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
 
         ";
 
-        $db->exec($sql);
+        $db->query($sql);
 
         //set up our packaged blocks -- a list of class names that extend Blocks_Block_Abstract
         $blocks = array(
@@ -73,7 +69,7 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
     {
         $db = get_db();
         $sql = "DROP TABLE IF EXISTS `$db->BlockConfig`";
-        $db->exec($sql);
+        $db->query($sql);
         delete_option('blocks');
     }
 

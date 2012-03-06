@@ -9,7 +9,9 @@ function blocks()
     $blocksManager->setRequest($request);
     $blocksManager->addBlocks();
     $blocksManager->renderBlocks();
-    $html = $blocksManager->getHtml();
+    $html = "<div class='blocks'>";
+    $html .= $blocksManager->getHtml();
+    $html .= "</div>";
     return $html;
-    
+
 }
