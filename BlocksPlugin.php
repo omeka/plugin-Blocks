@@ -23,6 +23,7 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
     public function hookPublicThemeHeader()
     {
         queue_css('blocks');
+        queue_js_string("if(typeof Omeka=='undefined') {var Omeka={};} Omeka.webRoot = '" . WEB_ROOT . "';" );
     }
 
     public function hookPublicThemePageContent()
