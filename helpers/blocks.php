@@ -15,3 +15,32 @@ function blocks()
     return $html;
 
 }
+
+
+function blocks_unregister_blocks($blockNames)
+{
+    $blocks = unserialize(get_option('blocks'));
+    $blocks = array_flip($blocks);
+    if(is_array($blockNames)) {
+        foreach($blockNames as $blockName) {
+            unset($blocks[$blockName]);
+        }
+    } else {
+        unset($blocks[$blockNames]);
+    }
+    $blocks = array_flip($blocks);
+    set_option('blocks', serialize($blocks));
+}
+
+function blocks_register_blocks($blockNames)
+{
+    $blocks = unserialize(get_option('blocks'));
+    if(is_array($blockNames)) {
+        foreach($blockNames as $blockName) {
+            $blocks[] = $blockName;
+        }
+    } else {
+        $blocks[] = $blockNames;
+    }
+    set_option('blocks', serialize($blocks));
+}
