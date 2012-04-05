@@ -36,9 +36,7 @@ function blocks_register_blocks($blockNames)
 {
     $blocks = unserialize(get_option('blocks'));
     if(is_array($blockNames)) {
-        foreach($blockNames as $blockName) {
-            $blocks[] = $blockName;
-        }
+        $blocks = array_merge($blocks, $blockNames);
     } else {
         $blocks[] = $blockNames;
     }
