@@ -2,7 +2,6 @@
 
 class BlockConfigTable extends Omeka_Db_Table
 {
-    public $_alias = 'bct';
 
     /**
      * params keys:  module, controller, action, id_route
@@ -11,7 +10,7 @@ class BlockConfigTable extends Omeka_Db_Table
      * similarly, if controller and action are there, do not return results that match only controller
      * @see application/libraries/Omeka/Db/Omeka_Db_Table::applySearchFilters()
      */
-    
+
     public function findBy($params, $limit = null, $page = null)
     {
         $blockConfigs = parent::findBy($params, $limit, $page);
@@ -36,7 +35,7 @@ class BlockConfigTable extends Omeka_Db_Table
         }
         return $blockConfigs;
     }
-    
+
     public function applySearchFilters($select, $params)
     {
         if(isset($params['custom_route'])) {
@@ -45,28 +44,28 @@ class BlockConfigTable extends Omeka_Db_Table
             return $this->filterByRequest($select, $params);
         } else {
             foreach($params as $column=>$value) {
-                $select->where("{$this->_alias}.$column = ?", $value);
+                $select->where("block_configs.$column = ?", $value);
                 return $select;
             }
-            
+
         }
     }
-    
+
     private function filterByCustomRoute($select, $params)
     {
-        $select->where("{$this->_alias}.custom_route = ?", $params['custom_route']);
+        $select->where("block_configs.custom_route = ?", $params['custom_route']);
         return $select;
     }
-    
+
     private function filterByRequest($select, $params)
     {
-        $select->where("{$this->_alias}.controller IS NULL");
-        $select->orWhere("{$this->_alias}.controller = ?", $params['controller']);
-        $select->orWhere("{$this->_alias}.action = ?", $params['action']);
+        $select->where("block_configs.controller IS NULL");
+        $select->orWhere("block_configs.controller = ?", $params['controller']);
+        $select->orWhere("block_configs.action = ?", $params['action']);
         if(isset($params['id'])) {
-            $select->orWhere("{$this->_alias}.id_request = ?", $params['id']);
+            $select->orWhere("block_configs.id_request = ?", $params['id']);
         }
         return $select;
     }
-    
+
 }
