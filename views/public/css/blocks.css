@@ -1,7 +1,10 @@
 div.blocks {
     float: right;
+    margin: 2px;
     margin-left: 5px;
     top: 150px;
+    border: 1px solid red;
+
 }
 
 dl.blocks-block-configs {
