@@ -9,6 +9,53 @@ $blocksPlugin = new BlocksPlugin();
 $blocksPlugin->setUp();
 
 
+class BlocksNotificationsBlock extends Blocks_Block_Abstract
+{
+    
+    const name = "Notification Block";
+    const description = "A general-purpose notifications block.";
+    const defaultTitle = "Notifications";
+    const plugin = "Blocks";
+    
+    public function isEmpty()
+    {
+        if(current_user()) {
+            return false;
+        }
+        return true;
+    }
+    
+    public function render()
+    {
+        $html = "<div class='block'>";
+        //$html .= "<h3>" . $this->blockConfig->title . "</h3>";
+        $html .= "<div class='block-body'>";
+        $html .= $this->blockConfig->options;
+        $notifications = apply_filters('blocks_notifications', array());
+        foreach($notifications as $notification) {
+            $html .= "<h4>" . $notification['title'] . "</h4>";
+            $html .= $notification['html'];
+        } 
+        $html .= "</div>";
+        $html .= "</div>";
+        return $html;
+    }
+    
+    static function prepareConfigOptions($formData)
+    {
+        //just give back the contents of the textarea
+        return $formData;
+    }
+    
+    static function formElementConfigData()
+    {
+        return false;
+
+    }    
+    
+    
+}
+
 class BlocksTextBlock extends Blocks_Block_Abstract
 {
     const name = "Text Block";
@@ -113,7 +160,6 @@ class BlocksCollectionItemBlock extends Blocks_Block_Abstract
         return display_files_for_item($options = array(), $wrapperAttributes = array('class'=>'block-collection-item'), $item);
 
     }
-
 
     static function prepareConfigOptions($formData)
     {

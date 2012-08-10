@@ -59,7 +59,8 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
         $blocks = array(
             'BlocksTextBlock',
             'BlocksCollectorsBlock',
-            'BlocksCollectionItemBlock'
+            'BlocksCollectionItemBlock',
+            'BlocksNotificationsBlock'
         );
         set_option('blocks', serialize($blocks));
 
