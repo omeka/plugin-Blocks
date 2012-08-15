@@ -38,13 +38,14 @@ class BlockConfigTable extends Omeka_Db_Table
 
     public function applySearchFilters($select, $params)
     {
+        $alias = $this->getTableAlias();
         if(isset($params['custom_route'])) {
             return $this->filterByCustomRoute($select, $params['custom_route']);
         } else if(isset($params['controller']) || isset($params['action']) || isset($params['id_request'])) {
             return $this->filterByRequest($select, $params);
         } else {
             foreach($params as $column=>$value) {
-                $select->where("block_configs.$column = ?", $value);
+                $select->where("$alias.$column = ?", $value);
                 return $select;
             }
 
@@ -59,11 +60,12 @@ class BlockConfigTable extends Omeka_Db_Table
 
     private function filterByRequest($select, $params)
     {
-        $select->where("block_configs.controller IS NULL");
-        $select->orWhere("block_configs.controller = ?", $params['controller']);
-        $select->orWhere("block_configs.action = ?", $params['action']);
+        $alias = $this->getTableAlias();
+        $select->where("$alias.controller IS NULL");
+        $select->orWhere("$alias.controller = ?", $params['controller']);
+        $select->orWhere("$alias.action = ?", $params['action']);
         if(isset($params['id'])) {
-            $select->orWhere("block_configs.id_request = ?", $params['id']);
+            $select->orWhere("$alias.id_request = ?", $params['id']);
         }
         return $select;
     }
