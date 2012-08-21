@@ -6,7 +6,8 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
         'install',
         'uninstall',
         'public_theme_header',
-        'public_theme_page_content'
+        'public_theme_page_content',
+        'upgrade'
     );
 
     protected $_filters = array(
