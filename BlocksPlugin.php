@@ -66,6 +66,14 @@ class BlocksPlugin extends Omeka_Plugin_Abstract
 
     }
 
+    public function hookUpgrade()
+    {
+        $blocks = unserialize(get_option('blocks'));
+        $blocks[] = 'BlocksNotificationsBlock';
+        set_option('blocks', serialize($blocks));
+        
+    }
+    
     public function hookUninstall()
     {
         $db = get_db();
