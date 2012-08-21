@@ -3,9 +3,7 @@ div.blocks {
     margin: 2px;
     margin-left: 5px;
     top: 150px;
-    border: 1px solid red;
     width: 200px;
-
 }
 
 dl.blocks-block-configs {
