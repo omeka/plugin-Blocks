@@ -17,6 +17,12 @@ class BlocksManager
     public function addBlocks()
     {
         $params = $this->request->getParams();
+        // Add default parameters.
+        $params += array(
+            'module' => 'default',
+            'controller' => 'index',
+            'action' => 'index',
+        );
         //unset($params['admin']);
         $params['sort_dir'] = 'ASC';
         $params['sort_field'] = 'weight';

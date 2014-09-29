@@ -23,6 +23,10 @@ class Table_BlockConfig extends Omeka_Db_Table
 
         // Where the config has non-null info that doesn't match the params, remove it
         foreach ($blockConfigs as $index => $blockConfig) {
+            if (isset($params['module']) && $blockConfig->omeka_module && ($blockConfig->omeka_module != $params['module'])) {
+                unset($blockConfigs[$index]);
+                continue;
+            }
             if (isset($params['controller']) && $blockConfig->controller && ($blockConfig->controller != $params['controller'])) {
                 unset($blockConfigs[$index]);
                 continue;
