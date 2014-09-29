@@ -1,28 +1,27 @@
 <?php
-
-//renders the html for blocks
-
+/**
+ * Renders the html for blocks.
+ */
 function blocks()
 {
-    $blocksManager = new BlocksManager();
+    $blocksManager = new BlocksManager;
     $request = Zend_Controller_Front::getInstance()->getRequest();
     $blocksManager->setRequest($request);
     $blocksManager->addBlocks();
     $blocksManager->renderBlocks();
-    $html = "<div class='blocks'>";
+
+    $html = '<div class="blocks">';
     $html .= $blocksManager->getHtml();
-    $html .= "</div>";
+    $html .= '</div>';
     return $html;
-
 }
-
 
 function blocks_unregister_blocks($blockNames)
 {
     $blocks = unserialize(get_option('blocks'));
     $blocks = array_flip($blocks);
-    if(is_array($blockNames)) {
-        foreach($blockNames as $blockName) {
+    if (is_array($blockNames)) {
+        foreach ($blockNames as $blockName) {
             unset($blocks[$blockName]);
         }
     } else {
@@ -35,7 +34,7 @@ function blocks_unregister_blocks($blockNames)
 function blocks_register_blocks($blockNames)
 {
     $blocks = unserialize(get_option('blocks'));
-    if(is_array($blockNames)) {
+    if (is_array($blockNames)) {
         $blocks = array_merge($blocks, $blockNames);
     } else {
         $blocks[] = $blockNames;
