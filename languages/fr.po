@@ -1,0 +1,149 @@
+# Translation for the Blocks plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Omeka\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-29 02:47+0200\n"
+"PO-Revision-Date: 2014-09-29 02:47+0100\n"
+"Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
+"Language-Team: French (http://www.transifex.com/projects/p/omeka/language/"
+"fr/)\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: views/admin/block-config/add.php:2
+msgid "Configure New Block"
+msgstr "Configurer un nouveau bloc"
+
+#: views/admin/block-config/add.php:11
+#, php-format
+msgid "New %s"
+msgstr "Nouveau %s"
+
+#: views/admin/block-config/browse.php:2 BlocksPlugin.php:162
+msgid "Blocks"
+msgstr "Blocs"
+
+#: views/admin/block-config/browse.php:14
+#: views/admin/block-config/browse.php:20
+#: views/admin/block-config/browse.php:26 forms/BlockConfigForm.php:126
+#: forms/BlockConfigForm.php:134 forms/BlockConfigForm.php:143
+msgid "Any"
+msgstr "Tous"
+
+#: views/admin/block-config/browse.php:48
+msgid "Available Blocks"
+msgstr "Blocs disponibles"
+
+#: views/admin/block-config/browse.php:54
+msgid "Name"
+msgstr "Nom"
+
+#: views/admin/block-config/browse.php:55
+msgid "Description"
+msgstr "Description"
+
+#: views/admin/block-config/browse.php:56
+msgid "List"
+msgstr "Liste"
+
+#: views/admin/block-config/browse.php:78
+#, php-format
+msgid "Add a %s"
+msgstr "Ajouter un %s"
+
+#: views/admin/block-config/browse.php:81
+msgid "Already set up:"
+msgstr "Déjà configurés :"
+
+#: views/admin/block-config/browse.php:89
+msgid "Set up: None"
+msgstr "Blocs configurés : aucun"
+
+#: views/admin/block-config/edit.php:2
+msgid "Configure Block"
+msgstr "Configurer le bloc"
+
+#: views/admin/block-config/edit.php:11
+#, php-format
+msgid "Edit %s"
+msgstr "Modifier %s"
+
+#: controllers/BlockConfigController.php:72
+msgid "The config has been canceled."
+msgstr "La configuration a été annulée."
+
+#: controllers/BlockConfigController.php:94
+#, php-format
+msgid "The block \"%s\" was successfully added!"
+msgstr "Le bloc \"%s\" a bien été ajouté !"
+
+#: controllers/BlockConfigController.php:99
+#, php-format
+msgid "The block \"%s\" was successfully changed!"
+msgstr "Le bloc \"%s\" a bien été modifé !"
+
+#: controllers/BlockConfigController.php:104
+#, php-format
+msgid "The block \"%s\" was successfully deleted!"
+msgstr "Le bloc \"%s\" a bien été supprimé !"
+
+#: controllers/BlockConfigController.php:109
+#, php-format
+msgid "This will delete the block \"%s\"."
+msgstr "Cela supprimera le bloc \"%s\"."
+
+#: libraries/Blocks/TextBlock.php:31
+msgid "Enter the text for your block"
+msgstr "Écrivez le texte de votre bloc"
+
+#: libraries/Blocks/TextBlock.php:32
+msgid "HTML is okay. No PHP for you!"
+msgstr "Le HTML est correct. Pas de PHP pour vous !"
+
+#: models/BlockConfig.php:61
+msgid "Block class should exists."
+msgstr "La classe du bloc doit exister."
+
+#: forms/BlockConfigForm.php:30
+msgid "Block Title"
+msgstr "Titre du bloc"
+
+#: forms/BlockConfigForm.php:37
+msgid "Apply to plugin"
+msgstr "Afficher pour l’extension"
+
+#: forms/BlockConfigForm.php:44
+msgid "Apply to page type"
+msgstr "Afficher pour le type de page"
+
+#: forms/BlockConfigForm.php:51
+msgid "Apply to subpage type"
+msgstr "Afficher pour le type de sous-page"
+
+#: forms/BlockConfigForm.php:58
+msgid "Apply to record id"
+msgstr "Afficher pour l’identifiant"
+
+#: forms/BlockConfigForm.php:64
+msgid "Apply to custom path"
+msgstr "Afficher pour le chemin personnalisé"
+
+#: forms/BlockConfigForm.php:70
+msgid "Weight"
+msgstr "Poids"
+
+#: forms/BlockConfigForm.php:94
+msgid "Cancel"
+msgstr "Annuler"
+
+#: forms/BlockConfigForm.php:100
+msgid "Delete"
+msgstr "Supprimer"

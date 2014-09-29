@@ -51,6 +51,14 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
     );
 
     /**
+     * Add the translations.
+     */
+    public function hookInitialize()
+    {
+        add_translation_source(dirname(__FILE__) . '/languages');
+    }
+
+    /**
      * Install the plugin.
      */
     public function hookInstall()
