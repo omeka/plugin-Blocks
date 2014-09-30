@@ -32,6 +32,8 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
         'install',
         'upgrade',
         'uninstall',
+        'config_form',
+        'config',
         'public_head',
         'public_content_top',
     );
@@ -48,6 +50,8 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
      */
     protected $_options = array(
         'blocks',
+        'blocks_queue_css' => true,
+        'blocks_append_to_content_top' => true,
     );
 
     /**
@@ -148,14 +152,42 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_uninstallOptions();
     }
 
+    /**
+     * Shows plugin configuration page.
+     */
+    public function hookConfigForm($args)
+    {
+        $view = $args['view'];
+        echo $view->partial(
+            'plugins/blocks-config-form.php'
+        );
+    }
+
+    /**
+     * Saves plugin configuration page.
+     *
+     * @param array Options set in the config form.
+     */
+    public function hookConfig($args)
+    {
+        $post = $args['post'];
+        foreach ($post as $key => $value) {
+            set_option($key, $value);
+        }
+    }
+
     public function hookPublicHead()
     {
-        queue_css_file('blocks');
+        if (get_option('blocks_queue_css')) {
+            queue_css_file('blocks');
+        }
     }
 
     public function hookPublicContentTop()
     {
-        echo blocks();
+        if (get_option('blocks_append_to_content_top')) {
+            echo blocks();
+        }
     }
 
     /**
