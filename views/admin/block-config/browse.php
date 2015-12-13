@@ -47,7 +47,7 @@ function blocks_block_config_edit_link($blockConfig)
 <div id="primary">
     <h2><?php echo __('Available Blocks'); ?></h2>
     <?php echo flash(); ?>
-    <table class="blocks-table" cellspacing="0" cellpadding="0">
+    <table class="blocks-table">
     <thead>
         <tr>
             <?php

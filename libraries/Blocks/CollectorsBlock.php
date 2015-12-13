@@ -13,7 +13,7 @@ class BlocksCollectorsBlock extends Blocks_Block_Abstract
 
     public function render()
     {
-        $collection = get_current_collection();
+        $collection = get_current_record('collection');
         if (is_null($collection)) {
             return false;
         }

@@ -110,7 +110,7 @@ Copyright
 
 [Omeka]: https://omeka.org "Omeka.org"
 [Blocks]: https://github.com/omeka/plugin-Blocks
-[Blocks issues]: http://omeka.org/forums/forum/plugins
+[Blocks issues]: https://omeka.org/forums/forum/plugins
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [Center for History & New Media]: http://chnm.gmu.edu
 [Daniel-KM]: https://github.com/Daniel-KM "Daniel Berthereau"

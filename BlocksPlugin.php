@@ -49,7 +49,7 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
      * @var array Options and their default values.
      */
     protected $_options = array(
-        'blocks',
+        'blocks' => null,
         'blocks_queue_css' => true,
         'blocks_append_to_content_top' => true,
     );
@@ -157,7 +157,7 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfigForm($args)
     {
-        $view = $args['view'];
+        $view = get_view();
         echo $view->partial(
             'plugins/blocks-config-form.php'
         );
@@ -171,8 +171,10 @@ class BlocksPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookConfig($args)
     {
         $post = $args['post'];
-        foreach ($post as $key => $value) {
-            set_option($key, $value);
+        foreach ($this->_options as $optionKey => $optionValue) {
+            if (isset($post[$optionKey])) {
+                set_option($optionKey, $post[$optionKey]);
+            }
         }
     }
 
