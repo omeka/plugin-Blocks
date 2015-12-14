@@ -1,134 +1,159 @@
 <?php
-
-class Blocks_BlockConfigController extends Omeka_Controller_Action
+/**
+ * Controller for Blocks Config.
+ * @package Blocks
+ */
+class Blocks_BlockConfigController extends Omeka_Controller_AbstractActionController
 {
+    protected $_autoCsrfProtection = true;
 
-    private $unusedRoutes = array(
-            'default',
-            'forbidden',
-            'error',
-            'id',
-            'page',
-            'pluginInstall',
-            'fake_cron_fakecron'
-
-        );
-
+    private $_unusedRoutes = array(
+        'default',
+        'forbidden',
+        'error',
+        'id',
+        'page',
+        'pluginInstall',
+        'fake_cron_fakecron',
+    );
 
     public function init()
     {
-
         $this->_helper->db->setDefaultModelName('BlockConfig');
-        $this->_modelClass = 'BlockConfig';
-    }
-
-    public function indexAction()
-    {
-        $this->_forward('browse');
-    }
-
-    public function editAction()
-    {
-
-        $blockConfig = $this->findById();
-        $blockClass = $blockConfig->class_name;
-        $this->view->blockClass = $blockClass;
-        $routesInfo = $this->setupView();
-        $form = $this->getBlockConfigForm($blockConfig, $routesInfo, $blockClass);
-        $this->view->form = $form;
-
-
-        if (!$this->getRequest()->isPost()) {
-            return;
-        }
-
-        if (!$form->isValid($this->getRequest()->getPost())) {
-            return;
-        }
-
-        $blockConfig->saveForm($form, $blockClass);
-        $this->_forward('browse');
     }
 
     public function addAction()
     {
+        if ($this->getRequest()->getParam('cancel')) {
+            $this->_cancelAction();
+            return;
+        }
+
         $blockClass = $this->getRequest()->getParam('block-class');
+        if (empty($blockClass)) {
+            $this->_helper->redirector('browse');
+        }
+
         $this->view->blockClass = $blockClass;
-        $routesInfo = $this->setupView();
-        $form = $this->getBlockConfigForm(false, $routesInfo, $blockClass);
+        $routesInfo = $this->_setupView();
+        $form = $this->_getBlockConfigForm(false, $routesInfo, $blockClass);
         $this->view->form = $form;
 
-
-        if (!$this->getRequest()->isPost()) {
-            return;
-        }
-
-        if (!$form->isValid($this->getRequest()->getPost())) {
-            return;
-        }
-
-        $blockConfig = new BlockConfig();
-        $blockConfig->saveForm($form, $blockClass);
-        $this->_forward('browse');
-
+        parent::addAction();
     }
 
+    public function editAction()
+    {
+        if ($this->getRequest()->getParam('cancel')) {
+            $this->_cancelAction();
+            return;
+        }
+
+        if ($this->getRequest()->getParam('deleteconfirm')) {
+            $this->_helper->redirector('delete-confirm', 'config', 'blocks', array(
+                'id' => $this->getRequest()->getParam('id'),
+            ));
+            return;
+        }
+
+        $blockConfig =  $this->_helper->db->findById();
+        $blockClass = $blockConfig->class_name;
+
+        $this->view->blockClass = $blockClass;
+        $routesInfo = $this->_setupView();
+        $form = $this->_getBlockConfigForm($blockConfig, $routesInfo, $blockClass);
+        $this->view->form = $form;
+
+        parent::editAction();
+    }
+
+    protected function _cancelAction()
+    {
+        $this->_helper->_flashMessenger(__('The config has been canceled.'), 'success');
+        $this->_helper->redirector('browse');
+    }
 
     public function browseAction()
     {
         $blockClasses = unserialize(get_option('blocks'));
         $blocks = array();
-        $blockConfigTable = get_db()->getTable('BlockConfig');
-        foreach($blockClasses as $blockClass)
-        {
+        $blockConfigTable = $this->_helper->db;
+        foreach ($blockClasses as $blockClass) {
             $blocks[$blockClass] = array(
-                    'name'=>$blockClass::name,
-                    'description'=>$blockClass::description,
-                    'configs'=>$blockConfigTable->findBy(array('class_name'=>$blockClass)),
-
-                );
+                'name' => $blockClass::name,
+                'description' => $blockClass::description,
+                'configs' => $blockConfigTable->findBy(array('class_name' => $blockClass)),
+            );
         }
 
-        $this->view->assign('blocks', $blocks);
+        $this->view->assign(array('blocks' => $blocks));
+    }
 
+    protected function _getAddSuccessMessage($record)
+    {
+        return __('The block "%s" was successfully added!', $record->title);
+    }
+
+    protected function _getEditSuccessMessage($record)
+    {
+        return __('The block "%s" was successfully changed!', $record->title);
+    }
+
+    protected function  _getDeleteSuccessMessage($record)
+    {
+        return __('The block "%s" was successfully deleted!', $record->title);
+    }
+
+    protected function _getDeleteConfirmMessage($record)
+    {
+        return __('This will delete the block "%s".', $record->title);
     }
 
     /**
+     * Redirect to another page after a record is successfully edited.
      *
-     * Adds some route info to the add and edit view to be used in configuring
+     * @param Omeka_Record_AbstractRecord $record
      */
-
-    private function setupView()
+    protected function _redirectAfterEdit($record)
     {
-        $router = Omeka_Context::getInstance()->getFrontController()->getRouter();
+        $this->_helper->redirector('browse');
+    }
+
+    /**
+     * Adds some route info to the add and edit view to be used in configuring.
+     */
+    private function _setupView()
+    {
+        $router = $this->getFrontController()->getRouter();
         $routes = $router->getRoutes();
-        //kill some routes we don't care about
-        foreach($this->unusedRoutes as $route) {
-            if(isset($routes[$route])) {
+        // Kill some routes we don't care about.
+        foreach ($this->_unusedRoutes as $route) {
+            if (isset($routes[$route])) {
                 unset($routes[$route]);
             }
         }
         $routesInfo = array();
-        foreach($routes as $routeName=>$route) {
+        foreach ($routes as $routeName => $route) {
             $routesInfo[$routeName] = $route->getDefaults();
         }
-        $routesInfo['itemsShow'] = array('action'=>'show', 'controller'=>'items');
-        $routesInfo['itemsBrowse'] = array('action'=>'browse', 'controller'=>'items');
-
-
-        $routesInfo['collectionsShow'] = array('action'=>'show', 'controller'=>'collections');
-        $routesInfo['collectionsBrowse'] = array('action'=>'browse', 'controller'=>'collections');
+        $routesInfo['itemsShow'] = array('action' => 'show', 'controller' => 'items');
+        $routesInfo['itemsBrowse'] = array('action' => 'browse', 'controller' => 'items');
+        $routesInfo['collectionsShow'] = array('action' => 'show', 'controller' => 'collections');
+        $routesInfo['collectionsBrowse'] = array('action' => 'browse', 'controller' => 'collections');
+        $routesInfo['filesShow'] = array('action' => 'show', 'controller' => 'files');
 
         $this->view->assign('routes', $routesInfo);
         return $routesInfo;
     }
 
-    private function getBlockConfigForm($blockConfig = false, $routesInfo, $blockClass)
+    private function _getBlockConfigForm($blockConfig, $routesInfo, $blockClass)
     {
-
         require_once BLOCKS_PLUGIN_DIR . '/forms/BlockConfigForm.php';
-        $form = new BlockConfigForm(array('blockConfig'=>$blockConfig , 'routes'=>$routesInfo, 'blockClass'=>$blockClass));
+        $form = new BlockConfigForm(array(
+            'blockConfig' => $blockConfig,
+            'routes' => $routesInfo,
+            'blockClass' => $blockClass,
+        ));
         return $form;
-
     }
 }

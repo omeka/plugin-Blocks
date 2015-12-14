@@ -1,74 +1,75 @@
 <?php
 
-
-class BlockConfig extends Omeka_Record
+/**
+ * @package Blocks\models
+ */
+class BlockConfig extends Omeka_Record_AbstractRecord
 {
     public $id;
     public $block_module;
-    public $omeka_module;
+    public $class_name;
     public $title;
+    public $omeka_module;
     public $controller;
     public $action;
     public $id_request;
     public $custom_route;
     public $options;
-    public $weight;
-    public $class_name;
-    
-    public function saveForm($form, $blockClass)
+    public $weight = 0;
+
+    /**
+     * Set the POST data to the record.
+     *
+     * @see Omeka_Record_AbstractRecord::save()
+     * @param array $post
+     */
+    public function setPostData($post)
     {
-        
-        $this->title = $form->getValue('title');
-        $omeka_module = $form->getValue('omeka_module');
-        
-        if($omeka_module == 'any') {
-            $this->omeka_module = NULL;
-        } else {
-            $this->omeka_module = $omeka_module;
+        // Set default and null values.
+        foreach (array(
+                'omeka_module',
+                'controller',
+                'action',
+                'id_request',
+                'custom_route',
+                'options',
+            ) as $key) {
+            if (isset($post[$key]) && (empty($post[$key]) || $post[$key] == 'any')) {
+                $post[$key] = null;
+            }
         }
-        
-        $controller = $form->getValue('controller');
-        if($controller == 'any') {
-            $this->controller = NULL;
-        } else {
-            $this->controller = $controller;
+        if (isset($post['weight'])) {
+            $post['weight'] = (integer) $post['weight'];
         }
-        $action = $form->getValue('action');
-        if($action == 'any') {
-            $this->action = NULL;
-        } else {
-            $this->action = $action;
-        }
-        
-        $id_request = $form->getValue('id_request');
-        if($id_request == '') {
-            $this->id_request = NULL;
-        } else {
-            $this->id_request = $id_request;
+        if (!isset($post['class_name']) && isset($post['block-class'])) {
+            $post['class_name'] = $post['block-class'];
         }
 
-        $custom_route = $form->getValue('custom_route');
-        if($custom_route == '') {
-            $this->custom_route = NULL;
-        } else {
-            $this->custom_route = $custom_route;
-        }
-        
-        $weight = $form->getValue('weight');
-        if(!$weight) {
-            $this->weight = 0;
-        } else {
-            $this->weight = $weight;
-        }
-
-        $this->options = $form->getValue('options');
-        $this->class_name = $blockClass;
-        $this->block_module = $blockClass::plugin;
-        $this->save();
-        
+        parent::setPostData($post);
     }
-    
-    
-    
-    
+
+    /**
+     * Template method for defining record validation rules.
+     *
+     * Should be overridden by subclasses.
+     *
+     * @return void
+     */
+    protected function _validate()
+    {
+        if (!class_exists($this->class_name)) {
+            $this->addError('class_name', __('Block class should exists.'));
+        }
+    }
+
+    /**
+     * Executes before the record is saved.
+     */
+    protected function beforeSave($args)
+    {
+        $blockClass = $this->class_name;
+        $this->block_module = class_exists($this->class_name)
+            ? $blockClass::plugin
+            : null;
+    }
 }

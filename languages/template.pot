@@ -1,0 +1,148 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-09-29 02:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: views/admin/block-config/add.php:2
+msgid "Configure New Block"
+msgstr ""
+
+#: views/admin/block-config/add.php:11
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: views/admin/block-config/browse.php:2 BlocksPlugin.php:162
+msgid "Blocks"
+msgstr ""
+
+#: views/admin/block-config/browse.php:14
+#: views/admin/block-config/browse.php:20
+#: views/admin/block-config/browse.php:26 forms/BlockConfigForm.php:126
+#: forms/BlockConfigForm.php:134 forms/BlockConfigForm.php:143
+msgid "Any"
+msgstr ""
+
+#: views/admin/block-config/browse.php:48
+msgid "Available Blocks"
+msgstr ""
+
+#: views/admin/block-config/browse.php:54
+msgid "Name"
+msgstr ""
+
+#: views/admin/block-config/browse.php:55
+msgid "Description"
+msgstr ""
+
+#: views/admin/block-config/browse.php:56
+msgid "List"
+msgstr ""
+
+#: views/admin/block-config/browse.php:78
+#, php-format
+msgid "Add a %s"
+msgstr ""
+
+#: views/admin/block-config/browse.php:81
+msgid "Already set up:"
+msgstr ""
+
+#: views/admin/block-config/browse.php:89
+msgid "Set up: None"
+msgstr ""
+
+#: views/admin/block-config/edit.php:2
+msgid "Configure Block"
+msgstr ""
+
+#: views/admin/block-config/edit.php:11
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: controllers/BlockConfigController.php:72
+msgid "The config has been canceled."
+msgstr ""
+
+#: controllers/BlockConfigController.php:94
+#, php-format
+msgid "The block \"%s\" was successfully added!"
+msgstr ""
+
+#: controllers/BlockConfigController.php:99
+#, php-format
+msgid "The block \"%s\" was successfully changed!"
+msgstr ""
+
+#: controllers/BlockConfigController.php:104
+#, php-format
+msgid "The block \"%s\" was successfully deleted!"
+msgstr ""
+
+#: controllers/BlockConfigController.php:109
+#, php-format
+msgid "This will delete the block \"%s\"."
+msgstr ""
+
+#: libraries/Blocks/TextBlock.php:31
+msgid "Enter the text for your block"
+msgstr ""
+
+#: libraries/Blocks/TextBlock.php:32
+msgid "HTML is okay. No PHP for you!"
+msgstr ""
+
+#: models/BlockConfig.php:61
+msgid "Block class should exists."
+msgstr ""
+
+#: forms/BlockConfigForm.php:30
+msgid "Block Title"
+msgstr ""
+
+#: forms/BlockConfigForm.php:37
+msgid "Apply to plugin"
+msgstr ""
+
+#: forms/BlockConfigForm.php:44
+msgid "Apply to page type"
+msgstr ""
+
+#: forms/BlockConfigForm.php:51
+msgid "Apply to subpage type"
+msgstr ""
+
+#: forms/BlockConfigForm.php:58
+msgid "Apply to record id"
+msgstr ""
+
+#: forms/BlockConfigForm.php:64
+msgid "Apply to custom path"
+msgstr ""
+
+#: forms/BlockConfigForm.php:70
+msgid "Weight"
+msgstr ""
+
+#: forms/BlockConfigForm.php:94
+msgid "Cancel"
+msgstr ""
+
+#: forms/BlockConfigForm.php:100
+msgid "Delete"
+msgstr ""

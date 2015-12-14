@@ -1,26 +1,19 @@
 <?php
-
-queue_js('block-config');
-
-head(array('title' => 'Configure New Block', 'bodyclass' => 'primary',
-    'content_class' => 'horizontal-nav'));
-$blockClass = $this->blockClass;
+$pageTitle = __('Configure Block');
+queue_js_file('block-config');
+echo head(array(
+    'title' => $pageTitle,
+    'bodyclass' => 'blocks',
+    'content_class' => 'horizontal-nav',
+));
 ?>
-<script type="text/javascript">
-	Blocks.routes = <?php echo json_encode($this->routes); ?>;
-</script>
-<h1>Configure Block</h1>
-<?php echo $this->navigation()->menu()->setUlClass('section-nav'); ?>
-
 <div id="primary">
-<h2>Edit <?php echo $blockClass::name; ?></h2>
-<p><?php echo $blockClass::description; ?></p>
+    <h2><?php echo __('Edit %s', $blockClass::name); ?></h2>
+    <p><?php echo $blockClass::description; ?></p>
     <?php echo flash(); ?>
-
-    <?php
-    echo $this->form;
-    ?>
-<?php echo delete_button(null, 'delete'); ?>
+    <?php echo $this->form; ?>
 </div>
-
-<?php foot();?>
+<script type="text/javascript">
+    Blocks.routes = <?php echo json_encode($this->routes); ?>;
+</script>
+<?php echo foot();?>

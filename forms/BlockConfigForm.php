@@ -1,68 +1,108 @@
 <?php
-
-class BlockConfigForm extends Omeka_Form
+/**
+ * Block Config form.
+ *
+ * @package Blocks\Form
+ */
+class BlockConfigForm extends Omeka_Form_Admin
 {
+    protected $_type = 'BlockConfig';
+
     public $blockClass;
     public $routes;
-    private $blockConfig;
+    private $_blockConfig;
 
     public function init()
     {
-        $blockClass = $this->blockClass;
         parent::init();
+
         $this->setAttrib('id', 'blocks-config');
         $this->setMethod('post');
 
-        $value = $this->blockConfig ? $this->blockConfig->title : $blockClass::defaultTitle;
-        $this->addElement('text', 'title', array('label'=>'Block Title', 'value'=>$value));
+        $blockClass = $this->blockClass;
 
-        $value = $this->blockConfig ? $this->blockConfig->custom_route : '';
-        $this->addElement('text', 'custom_route', array('label' => 'Apply to custom path', 'value' => $value));
-
-        $value = $this->blockConfig ? $this->blockConfig->omeka_module : '';
-        $this->addElement('select', 'omeka_module', array('label'=>'Apply to plugin',
-        												  'multiOptions'=>$this->routesToPluginOptions(),
-                                                          'value' => $value
+        $this->addElement('hidden', 'class_name', array(
+            'value' => $blockClass,
         ));
 
-        $value = $this->blockConfig ? $this->blockConfig->controller : '';
-        $this->addElement('select', 'controller', array('label' =>'Apply to page type',
-        												'multiOptions'=>$this->routesToControllerOptions(),
-                                                        'value' => $value
-                                                        ));
+        $value = $this->_blockConfig ? $this->_blockConfig->title : $blockClass::defaultTitle;
+        $this->addElementToEditGroup('text', 'title', array(
+            'label' => __('Block Title'),
+            'value' => $value,
+            'required' => true,
+        ));
 
-        $value = $this->blockConfig ? $this->blockConfig->action : '';
-        $this->addElement('select', 'action', array('label' => 'Apply to subpage type',
-        												'multiOptions'=>$this->routesToActionOptions(),
-                                                        'value' => $value
-                                                        ));
+        $value = $this->_blockConfig ? $this->_blockConfig->omeka_module : '';
+        $this->addElementToEditGroup('select', 'omeka_module', array(
+            'label' => __('Apply to plugin'),
+            'multiOptions' => $this->_routesToPluginOptions(),
+            'value' => $value,
+        ));
 
+        $value = $this->_blockConfig ? $this->_blockConfig->controller : '';
+        $this->addElementToEditGroup('select', 'controller', array(
+            'label' => __('Apply to page type'),
+            'multiOptions' => $this->_routesToControllerOptions(),
+            'value' => $value,
+        ));
 
-        $value = $this->blockConfig ? $this->blockConfig->id_request : '';
-        $this->addElement('text', 'id_request', array('label' => 'Apply to record id', 'value'=>$value));
+        $value = $this->_blockConfig ? $this->_blockConfig->action : '';
+        $this->addElementToEditGroup('select', 'action', array(
+            'label' => __('Apply to subpage type'),
+            'multiOptions' => $this->_routesToActionOptions(),
+            'value' => $value,
+        ));
 
+        $value = $this->_blockConfig ? $this->_blockConfig->id_request : '';
+        $this->addElementToEditGroup('text', 'id_request', array(
+            'label' => __('Apply to record id'),
+            'value' => $value,
+        ));
+
+        $value = $this->_blockConfig ? $this->_blockConfig->custom_route : '';
+        $this->addElementToEditGroup('text', 'custom_route', array(
+            'label' => __('Apply to custom path'),
+            'value' => $value,
+        ));
+
+        $value = $this->_blockConfig ? $this->_blockConfig->weight : 0;
+        $this->addElementToEditGroup('select', 'weight', array(
+            'label' => __('Weight'),
+            'multiOptions' => array(
+                '-5' => -5,
+                '-4' => -4,
+                '-3' => -3,
+                '-2' => -2,
+                '-1' => -1,
+                '0' => 0,
+                '1' => 1,
+                '2' => 2,
+                '3' => 3,
+                '4' => 4,
+                '5' => 5,
+            ),
+            'value' => $value,
+        ));
 
         $configData = $blockClass::formElementConfigData();
-        if($configData) {
-            $configData['options']['value'] = $this->blockConfig ? $this->blockConfig->options : '';
-            $this->addElement($configData['element'], 'options', $configData['options'] );
+        if ($configData) {
+            $configData['options']['value'] = $this->_blockConfig ? $this->_blockConfig->options : '';
+            $this->addElementToEditGroup($configData['element'], 'options', $configData['options']);
         }
 
-        $value = $this->blockConfig ? $this->blockConfig->weight : 0;
-        $this->addElement('select', 'weight', array('label' => 'Weight',
-        											'multiOptions'=>array('-5'=>-5,
-                                                        '-4' => -4,
-                                                        '-3' => -3,
-                                                        '-2' => -2,
-                                                        '-1' => -1,
-                                                        '0' => 0,
-                                                        '1' => 1, '2'=>2, '3'=>3, '4'=>4, '5'=>5),
+        $this->addElementToSaveGroup('submit', 'cancel', array(
+            'label' => __('Cancel'),
+            'class' => 'big blue button',
+        ));
 
-                                                    'value' => $value
-                                                    ));
+        if ($this->_blockConfig) {
+            $this->addElementToSaveGroup('submit', 'delete-confirm', array(
+                'label' => __('Delete'),
+                'class' => 'big red button',
+            ));
+        }
 
-        $this->addElement('submit', 'Save');
-
+        $this->addElement('sessionCsrfToken', 'csrf_token');
     }
 
     public function setRoutes($routes)
@@ -77,44 +117,44 @@ class BlockConfigForm extends Omeka_Form
 
     public function setBlockConfig($blockConfig)
     {
-        $this->blockConfig = $blockConfig;
+        $this->_blockConfig = $blockConfig;
     }
 
-    private function routesToPluginOptions()
+    private function _routesToPluginOptions()
     {
-        $selectArray = array('any' => 'Any');
-        $selectArray = array_merge($selectArray, $this->routesToFieldOptions('module') );
-        return $selectArray;
+        $select = array();
+        $select['any'] = __('Any');
+        $select = array_merge($select, $this->_routesToFieldOptions('module'));
+        return $select;
     }
 
-    private function routesToControllerOptions()
+    private function _routesToControllerOptions()
     {
-        $selectArray = array();
-        $selectArray = array('any' => 'Any');
-        $selectArray = array_merge($selectArray, $this->routesToFieldOptions('controller') );
+        $select = array();
+        $select['any'] = __('Any');
+        $select = array_merge($select, $this->_routesToFieldOptions('controller'));
 
-        return $selectArray;
+        return $select;
     }
 
-    private function routesToActionOptions()
+    private function _routesToActionOptions()
     {
-        $selectArray = array();
-        $selectArray = array('any' => 'Any');
-        $selectArray = array_merge($selectArray, $this->routesToFieldOptions('action') );
-        return $selectArray;
+        $select = array();
+        $select['any'] = __('Any');
+        $select = array_merge($select, $this->_routesToFieldOptions('action'));
+        return $select;
     }
 
-    private function routesToFieldOptions($field)
+    private function _routesToFieldOptions($field)
     {
-        $selectArray = array();
-        foreach($this->routes as $routeName=>$route) {
-            if(isset($route[$field])) {
-                $selectArray[$route[$field]] = $route[$field];
+        $select = array();
+        foreach ($this->routes as $routeName => $route) {
+            if (isset($route[$field])) {
+                $select[$route[$field]] = $route[$field];
             }
         }
 
-        $selectArray = array_unique($selectArray);
-        return $selectArray;
+        $select = array_unique($select);
+        return $select;
     }
-
 }

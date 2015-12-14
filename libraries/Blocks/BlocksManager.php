@@ -1,17 +1,13 @@
 <?php
-
-
 /**
- *
  * @TODO: make this a singleton
  * @author patrickmj
- *
  */
 class BlocksManager
 {
     public $request;
     public $blocks = array();
-    public $html= '';
+    public $html = '';
 
     public function setRequest($request)
     {
@@ -20,13 +16,19 @@ class BlocksManager
 
     public function addBlocks()
     {
-        $requestInfo = $this->request->getParams();
-        //unset($requestInfo['admin']);
-        $requestInfo['sort_dir'] = 'ASC';
-        $requestInfo['sort_field'] = 'weight';
-        //BlocksTable will do the filtering to get the correct blocks
-        $blockConfigs = get_db()->getTable('BlockConfig')->findBy($requestInfo);
-        foreach($blockConfigs as $blockConfig) {
+        $params = $this->request->getParams();
+        // Add default parameters.
+        $params += array(
+            'module' => 'default',
+            'controller' => 'index',
+            'action' => 'index',
+        );
+        //unset($params['admin']);
+        $params['sort_dir'] = 'ASC';
+        $params['sort_field'] = 'weight';
+        // BlocksTable will do the filtering to get the correct blocks.
+        $blockConfigs = get_db()->getTable('BlockConfig')->findBy($params);
+        foreach ($blockConfigs as $blockConfig) {
             $class = $blockConfig->class_name;
             $this->blocks[] = new $class($this->request, $blockConfig);
         }
@@ -34,14 +36,16 @@ class BlocksManager
 
     public function renderBlocks()
     {
-        foreach($this->blocks as $block) {
-            if(!$block->isEmpty()) {
-                $html = "<h2>" . $block->getConfigTitle() . "</h2>";
-                $html .= $block->render();
+        foreach ($this->blocks as $block) {
+            if (!$block->isEmpty()) {
+                $html = $block->render();
                 $blockClass = 'block_' . Inflector::underscore(get_class($block));
-                $this->html .= "<div class='block $blockClass'>";
-                $this->html .= $html;
-                $this->html .= "</div>";
+                $this->html .= '<div class="block ' . $blockClass . '">';
+                $this->html .= '<h2>' . $block->getConfigTitle() . '</h2>';
+                $this->html .= '<div class="block-body">';
+                $this->html .= $block->render();
+                $this->html .= '</div>';
+                $this->html .= '</div>';
             }
         }
     }
@@ -50,5 +54,4 @@ class BlocksManager
     {
         return $this->html;
     }
-
 }
